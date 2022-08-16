@@ -1,24 +1,22 @@
-import logo from './logo.svg';
+import needle from './media/Needle Silva.png';
+import back from './media/Back Silva.png';
+import {useState} from 'react'
 import './App.css';
-
 function App() {
+  let [angle,setAngle] = useState(0)
+  function activateLasers(){
+    setAngle(angle+45)
+    console.log(angle+45);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        
-      </header>
+    <div className="main">
+      <button onClick={activateLasers}>
+        Activate Lasers
+      </button>
+      <div className='compass'>
+        <img src={back} alt="back" className='back'/> 
+        <img src={needle} className='needle' alt="needle" style={{ transform: `rotate(${angle}deg)` }} />
+      </div>
     </div>
   );
 }

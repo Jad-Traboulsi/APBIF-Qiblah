@@ -1,5 +1,5 @@
 import needle from './media/Needle Silva.png';
-import back from './media/Back Silva.png';
+import back from './media/Back.png';
 import {useState} from 'react'
 import './App.css';
 function App() {

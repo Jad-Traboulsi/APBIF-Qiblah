@@ -1,9 +1,10 @@
 import needle from './data/media/Needle Silva.png';
 import back from './data/media/Back.png';
 import './App.css';
-import { MapContainer, TileLayer, Marker,Popup,Polyline} from 'react-leaflet'
+import { MapContainer, TileLayer, Marker,Popup,Polyline,LayersControl} from 'react-leaflet'
 import useGeoLocation from './components/getLocation';
 import configs from './data/configs';
+import { useRef } from 'react';
 
 function App() {
 
@@ -23,7 +24,20 @@ function App() {
   }
   const { location, declination, bearing } = useGeoLocation();
 
-  
+  const {BaseLayer} = LayersControl
+  const mapRef = useRef(null)
+  const markerRef = useRef(null)
+
+  function openMarker(){
+    const map = mapRef.current
+    if (!map) {
+      return
+    }
+    const marker = markerRef.current
+    if (marker) {
+      marker.openPopup()
+    }
+  }
   function toggle(event){
     if (event.target.id === elements.compass400.buttonId){
       if (event.target.innerHTML === `Show ${elements.compass400.buttonName}`){
@@ -41,8 +55,9 @@ function App() {
       }
     } else if (event.target.id === elements.map.buttonId) {
       if (event.target.innerHTML === `Show ${elements.map.buttonName}`) {
-          document.getElementById(elements.map.containerId).style.top = "0%";
+        document.getElementById(elements.map.containerId).style.top = "0%";
         document.getElementById(elements.map.buttonId).innerHTML = `Hide ${elements.map.buttonName}`;
+        openMarker()
       } else if (event.target.innerHTML === 'Hide Map') {
         document.getElementById(elements.map.containerId).style.top = "-100%";
         document.getElementById(elements.map.buttonId).innerHTML = `Show ${elements.map.buttonName}`;
@@ -93,12 +108,30 @@ function App() {
         </div>
         <div id='mapBox'>
           <div id={elements.map.containerId}>
-            <MapContainer center={[location.coordinates.lat, location.coordinates.lng]} zoom={18}>
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Marker position={[location.coordinates.lat, location.coordinates.lng]} className={elements.map.userLocationId}>
+            <MapContainer 
+              center={[location.coordinates.lat, location.coordinates.lng]} 
+              zoom={18}
+              whenReady={(map) => {
+                mapRef.current = map
+              }}>
+              <LayersControl>
+                <BaseLayer checked name="Basic View">
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  />
+                </BaseLayer>
+
+                <BaseLayer name="Satellite View">
+                  <TileLayer
+                    url='https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}'
+                    maxZoom={20}
+                    subdomains={['mt1', 'mt2', 'mt3']}
+                  />
+                </BaseLayer>
+              </LayersControl>
+
+              <Marker ref={markerRef} position={[location.coordinates.lat, location.coordinates.lng]} className={elements.map.userLocationId}>
                 <Popup>
                   Your location: {location.coordinates.lat}, {location.coordinates.lng}
                   <br/>

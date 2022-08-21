@@ -1,4 +1,3 @@
-check if possible to add satelite view
 open popup by default
 
 

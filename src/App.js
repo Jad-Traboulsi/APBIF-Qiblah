@@ -28,11 +28,12 @@ function App() {
   const mapRef = useRef(null)
   const markerRef = useRef(null)
 
-  function openMarker(){
+  function openAndCenterMarker(){
     const map = mapRef.current
     if (!map) {
       return
     }
+    map.flyTo([Number(location.coordinates.lat),Number(location.coordinates.lng)])
     const marker = markerRef.current
     if (marker) {
       marker.openPopup()
@@ -57,7 +58,7 @@ function App() {
       if (event.target.innerHTML === `Show ${elements.map.buttonName}`) {
         document.getElementById(elements.map.containerId).style.top = "0%";
         document.getElementById(elements.map.buttonId).innerHTML = `Hide ${elements.map.buttonName}`;
-        openMarker()
+        openAndCenterMarker()
       } else if (event.target.innerHTML === 'Hide Map') {
         document.getElementById(elements.map.containerId).style.top = "-100%";
         document.getElementById(elements.map.buttonId).innerHTML = `Show ${elements.map.buttonName}`;
@@ -111,6 +112,7 @@ function App() {
             <MapContainer 
               center={[location.coordinates.lat, location.coordinates.lng]} 
               zoom={18}
+              ref={mapRef}
               whenReady={(map) => {
                 mapRef.current = map
               }}>

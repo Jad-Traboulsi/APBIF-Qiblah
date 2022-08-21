@@ -1,6 +1,3 @@
-open popup by default
-
-
 draw iphone compass
 do the same thing done for compass 400
 

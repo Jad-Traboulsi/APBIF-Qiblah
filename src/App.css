@@ -8,13 +8,33 @@
   position: relative;
   top: 0;
   left: 0;
-  max-width: 25%;
+  max-width: 100%; 
 }
 
 .needle {
   position: absolute;
-  top: 25.5%;
-  left: 11.9%;
+  /* top: 25.5%;
+  left: 11.9%; */
+  top: 25.7%;
+  left: 47.6%;
   max-height: 60%;
-  transition: 400ms linear all;
+  transition: 500ms linear all;
+}
+.compassIndicator{
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.compassBox{
+  height: 340px;
+  width: 300px;
+  overflow: hidden;
+}
+.compassContainer{
+  top: -100%;
+  position: relative;
+  transition: all .5s ease-in;
 }

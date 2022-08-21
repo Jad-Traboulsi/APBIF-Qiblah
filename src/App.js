@@ -1,106 +1,120 @@
-import needle from './media/Needle Silva.png';
-import back from './media/Back.png';
-import {useState} from 'react'
-import axios from 'axios'
+import needle from './data/media/Needle Silva.png';
+import back from './data/media/Back.png';
 import './App.css';
+import { MapContainer, TileLayer, Marker,Popup,Polyline} from 'react-leaflet'
+import useGeoLocation from './components/getLocation';
+import configs from './data/configs';
 
 function App() {
-  let [compassAngleDegree, setcompassAngleDegree] = useState(0)
-  let [compassAngleGrad, setcompassAngleGrad] = useState(0)
-  let [bearingCalculated, setBearingCalculated] = useState(0)
-  let [magneticDeclination, setMagneticDeclination] = useState(0)
-  let [lat, setLat] = useState(0)
-  let [long, setLong] = useState(0)
-  const kaabaLat = 21.422493;
-  const kaabaLong = 39.826202;
 
-  function getLocation() {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(function (position) {
-        const latFound = position.coords.latitude.toFixed(4)
-        const longFound = position.coords.longitude.toFixed(4)
-        setLat(latFound);
-        setLong(longFound);
-        getBearing(longFound, latFound)
-        getDeviation(longFound, latFound)
-      });
-    } else {
-      console.log("Not Available");
+  const elements = {
+    compass400: {
+      buttonId: "showHideCompass400",
+      buttonName: "Compass 400",
+      containerId: "compass400Container",
+      needleId:"compass400Needle"
+    },
+    map: {
+      buttonId: "showHideMap",
+      buttonName: "Map",
+      containerId: "mapContainer",
+      userLocationId:"userLocation",
     }
   }
-  function changeDegToRad(x) {
-    return x * Math.PI / 180;
-  }
-  function changeDegToGrad(x){
-    return x/0.9;
-  }
-  function getBearing(long1,lat1){
+  const { location, declination, bearing } = useGeoLocation();
 
-    const y = Math.sin(changeDegToRad(kaabaLong) - changeDegToRad(long1)) * Math.cos(changeDegToRad(kaabaLat));
-    const x = Math.cos(changeDegToRad(lat1)) * Math.sin(changeDegToRad(kaabaLat)) -
-      Math.sin(changeDegToRad(lat1)) * Math.cos(changeDegToRad(kaabaLat)) * Math.cos(changeDegToRad(kaabaLong) - changeDegToRad(long1));
-
-    const θ = Math.atan2(y, x);
-    const brng = (θ * 180 / Math.PI + 360) % 360; // in degrees
-    console.log(`Bearing Calculated = ${brng.toFixed(3)}`)
-    setBearingCalculated(brng.toFixed(3))
-  }
-  function getAngle() {
-    setcompassAngleDegree(bearingCalculated);
-    setcompassAngleGrad(changeDegToGrad(bearingCalculated))
-  }
-  async function getDeviation(longitute,latitude){
-    const res = await axios.get(`https://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination`,{
-      params: {
-        key: "zNEw7",
-        lat1: latitude.toString(),
-        lon1: longitute.toString(),
-        resultFormat: "json"
+  
+  function toggle(event){
+    if (event.target.id === elements.compass400.buttonId){
+      if (event.target.innerHTML === `Show ${elements.compass400.buttonName}`){
+        document.getElementById(elements.compass400.containerId).style.top = "0%";
+        document.getElementById(elements.compass400.buttonId).innerHTML = `Hide ${elements.compass400.buttonName}`;
+        setTimeout(function(){
+          document.getElementById(elements.compass400.needleId).style.transform = `rotate(${(360 - (bearing.value - Number(declination.value))).toFixed(configs.decimal)}deg)`;
+        },550);
+      } else if (event.target.innerHTML === `Hide ${elements.compass400.buttonName}`){
+        document.getElementById(elements.compass400.containerId).style.top = "-100%";
+        document.getElementById(elements.compass400.buttonId).innerHTML = `Show ${elements.compass400.buttonName}`;
+        setTimeout(function () {
+          document.getElementById(elements.compass400.needleId).style.transform="rotate(0deg)"
+        }, 550);
       }
-    })
-    setMagneticDeclination(res.data.result[0].declination)
-    console.log(`Magnetic declination of location = ${res.data.result[0].declination}`);
-  }
-  function toggle(){
-    let text = document.getElementById('showHideCompass').innerHTML;
-    if(text==="Show"){
-      document.getElementsByClassName('compassContainer')[0].style.top = "0%";
-      document.getElementById('showHideCompass').innerHTML = 'Hide';
-      setTimeout(function(){
-        getAngle();
-      },550);
-    }else if(text === 'Hide'){
-      document.getElementsByClassName('compassContainer')[0].style.top = "-100%";
-      document.getElementById('showHideCompass').innerHTML = 'Show';
-      setTimeout(function () {
-        setcompassAngleDegree(0);
-      }, 500);
-    }
+    } else if (event.target.id === elements.map.buttonId) {
+      if (event.target.innerHTML === `Show ${elements.map.buttonName}`) {
+          document.getElementById(elements.map.containerId).style.top = "0%";
+        document.getElementById(elements.map.buttonId).innerHTML = `Hide ${elements.map.buttonName}`;
+      } else if (event.target.innerHTML === 'Hide Map') {
+        document.getElementById(elements.map.containerId).style.top = "-100%";
+        document.getElementById(elements.map.buttonId).innerHTML = `Show ${elements.map.buttonName}`;
+        }
+      }
   }
 
   return (
     <div className="main">
-      <button onClick={getLocation}>
-        Get Location
-      </button>
-      <br />
-      <span>Your location is {lat}, {long}</span>
-      <br />
-      <br />
-      <button id="showHideCompass" onClick={toggle}>
-        Show
-      </button>
-      <br />
-      <div className='compassBox'> 
-        <div className='compassContainer'>
-          <div className='compass'>
-            <img src={back} alt="back" className='back'/> 
-            <img src={needle} className='needle' alt="needle" style={{ transform: `rotate(${compassAngleDegree}deg)` }} />
-            <br/>
+      {location.loaded && location.error && (<>
+        {location.error.message}
+      </>)}
+      {!location.loaded && (<>
+        Loading location
+      </>)}
+      {location.loaded && !location.error && declination.loaded && !declination.error && (<>
+        <span>Your location is {location.coordinates.lat}, {location.coordinates.lng}</span>
+        <br />
+        <span>Your location has magnetic declination of {declination.value}</span>
+
+        <br/>
+        Qiblah Heading: {bearing.value}
+        <br/>
+        Qiblah Magnetic: {(bearing.value - Number(declination.value)).toFixed(configs.decimal)}
+        <br/>
+        Compass 360 number: {(360 - (bearing.value - Number(declination.value))).toFixed(configs.decimal)}
+        <br/>
+        Compass 400 number: {((360 - (bearing.value - Number(declination.value)))/0.9).toFixed(configs.decimal)}
+        <br />
+        <br />
+        <button id={elements.compass400.buttonId} onClick={toggle}>
+          Show {elements.compass400.buttonName}
+        </button>
+        <br />
+        <button id={elements.map.buttonId} onClick={toggle}>
+          Show {elements.map.buttonName}
+        </button>
+        <br />
+        <div id='compassBox'>
+          <div id={elements.compass400.containerId}>
+            <div className='compass'>
+              <img src={back} alt="back" className='back' />
+              <img src={needle} id={elements.compass400.needleId} className='needle' alt="needle"/>
+              <br />
+            </div>
+            <span className='compassIndicator'>{((360 - (bearing.value - Number(declination.value))) / 0.9).toFixed(configs.decimal)}</span>
           </div>
-          <span className='compassIndicator'>{compassAngleGrad}</span>
         </div>
-      </div>
+        <div id='mapBox'>
+          <div id={elements.map.containerId}>
+            <MapContainer center={[location.coordinates.lat, location.coordinates.lng]} zoom={18}>
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={[location.coordinates.lat, location.coordinates.lng]} className={elements.map.userLocationId}>
+                <Popup>
+                  Your location: {location.coordinates.lat}, {location.coordinates.lng}
+                  <br/>
+                  Qiblah Heading: {bearing.value}
+                </Popup>
+              </Marker>
+              <Marker position={[configs.kaaba.lat, configs.kaaba.lng]}>
+                <Popup >
+                  Kaaba {configs.kaaba.lat}, {configs.kaaba.lng}
+                </Popup>
+              </Marker>
+              <Polyline positions={[[location.coordinates.lat, location.coordinates.lng], [configs.kaaba.lat, configs.kaaba.lng]]} />
+            </MapContainer>
+          </div>
+        </div>
+      </>)}
 
     </div>
   );

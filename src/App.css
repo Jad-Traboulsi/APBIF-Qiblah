@@ -1,3 +1,8 @@
+.leaflet-container {
+  width: 500px;
+  height: 500px;
+}
+
 .compass {
   position: relative;
   top: 0;
@@ -28,12 +33,25 @@
   font-weight: bold;
 }
 
-.compassBox{
+
+#compassBox {
   height: 340px;
   width: 300px;
   overflow: hidden;
 }
-.compassContainer{
+
+#compass400Container {
+  top: -100%;
+  position: relative;
+  transition: all .5s ease-in;
+}
+#mapBox {
+  height: 500px;
+  width: 500px;
+  overflow: hidden;
+}
+
+#mapContainer {
   top: -100%;
   position: relative;
   transition: all .5s ease-in;

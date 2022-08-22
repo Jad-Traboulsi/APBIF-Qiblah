@@ -1,10 +1,9 @@
-import needle from './data/media/Needle Silva.png';
-import back from './data/media/Back.png';
 import './App.css';
 import { MapContainer, TileLayer, Marker,Popup,Polyline,LayersControl} from 'react-leaflet'
 import useGeoLocation from './components/getLocation';
 import configs from './data/configs';
 import { useRef } from 'react';
+import Compass400 from './components/Compass400';
 
 function App() {
 
@@ -13,7 +12,8 @@ function App() {
       buttonId: "showHideCompass400",
       buttonName: "Compass 400",
       containerId: "compass400Container",
-      needleId:"compass400Needle"
+      needleId:"compass400Needle",
+      compassTextId:"compass400Text"
     },
     map: {
       buttonId: "showHideMap",
@@ -44,14 +44,16 @@ function App() {
       if (event.target.innerHTML === `Show ${elements.compass400.buttonName}`){
         document.getElementById(elements.compass400.containerId).style.top = "0%";
         document.getElementById(elements.compass400.buttonId).innerHTML = `Hide ${elements.compass400.buttonName}`;
-        setTimeout(function(){
+        setTimeout(function () {
           document.getElementById(elements.compass400.needleId).style.transform = `rotate(${(360 - (bearing.value - Number(declination.value))).toFixed(configs.decimal)}deg)`;
+          document.getElementById(elements.compass400.compassTextId).innerHTML = `${((360 - (bearing.value - Number(declination.value))) / 0.9).toFixed(configs.decimal) }`;
         },550);
       } else if (event.target.innerHTML === `Hide ${elements.compass400.buttonName}`){
         document.getElementById(elements.compass400.containerId).style.top = "-100%";
         document.getElementById(elements.compass400.buttonId).innerHTML = `Show ${elements.compass400.buttonName}`;
         setTimeout(function () {
           document.getElementById(elements.compass400.needleId).style.transform="rotate(0deg)"
+          document.getElementById(elements.compass400.compassTextId).innerHTML = `0`;
         }, 550);
       }
     } else if (event.target.id === elements.map.buttonId) {
@@ -102,12 +104,7 @@ function App() {
         <br />
         <div id='compassBox'>
           <div id={elements.compass400.containerId}>
-            <div className='compass'>
-              <img src={back} alt="back" className='back' />
-              <img src={needle} id={elements.compass400.needleId} className='needle' alt="needle"/>
-              <br />
-            </div>
-            <span className='compassIndicator'>{((360 - (bearing.value - Number(declination.value))) / 0.9).toFixed(configs.decimal)}</span>
+            <Compass400 input={elements.compass400}/>
           </div>
         </div>
         <div id='mapBox'>

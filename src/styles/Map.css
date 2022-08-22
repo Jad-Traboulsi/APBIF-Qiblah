@@ -1,0 +1,16 @@
+.leaflet-container {
+    width: 500px;
+    height: 500px;
+}
+
+#mapBox {
+    height: 500px;
+    width: 500px;
+    overflow: hidden;
+}
+
+#mapContainer {
+    top: -100%;
+    position: relative;
+    transition: all .5s ease-in;
+}

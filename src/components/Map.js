@@ -1,4 +1,6 @@
 import configs from '../data/configs';
+import '../styles/Map.css'
+import '../styles/Compass400.css'
 import { MapContainer, TileLayer, Marker, Popup, Polyline, LayersControl } from 'react-leaflet'
 
 function Map(input){
@@ -9,7 +11,7 @@ function Map(input){
     return(
         <MapContainer
             center={[location.coordinates.lat, location.coordinates.lng]}
-            zoom={18}
+            zoom={configs.zoomLevel}
             ref={mapRef}
             whenReady={(map) => {
                 mapRef.current = map

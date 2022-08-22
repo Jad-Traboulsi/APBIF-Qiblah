@@ -5,9 +5,9 @@ function Compass400(input) {
     const {needleId,compassTextId} = input.input
     return (
         <>
-            <div className='compass'>
-                <img src={back} alt="back" className='back' />
-                <img src={needle} id={needleId} className='needle' alt="needle" />
+            <div id='compass400'>
+                <img src={back} alt="back" id='compass400Back' />
+                <img src={needle} id={needleId} alt="needle" />
                 <br />
             </div>
             <span id={compassTextId} className='compassIndicator'>0</span>

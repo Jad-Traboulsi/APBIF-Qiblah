@@ -58,6 +58,7 @@ const useGeoLocation = () => {
                     lng: lngFetched,
                 },
             });
+            fetch(`https://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination?key=zNEw7&resultFormat=json&lat1=${latFetched}&lon1=${lngFetched}`).then((res) => res.json()).then((f) => { console.log(`By API Call Declination = ${f.result[0].declination.toFixed(configs.decimal) }`);});
             getBearing(latFetched, lngFetched)
             let geoMag = await geoMagFactory();
             const myGeoMag = geoMag(latFetched,lngFetched, 0.0, new Date());

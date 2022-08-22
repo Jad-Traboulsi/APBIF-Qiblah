@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import configs from "../data/configs";
+import geoMagFactory from "./getDeviation";
 
 const useGeoLocation = () => {
     const [location, setLocation] = useState({
@@ -8,17 +8,11 @@ const useGeoLocation = () => {
         coordinates: { lat: "", lng: "" },
     });
     const [declination, setDeclination] = useState({
-        loaded: false,
         value: 0
     });
     const [bearing, setBearing] = useState({
-        loaded: false,
         value: 0
     });
-
-    
-
-    
 
     const onError = (error) => {
         setLocation({
@@ -51,11 +45,10 @@ const useGeoLocation = () => {
 
             const brng = Math.atan2(Δλ, Δψ) * 180 / Math.PI;
             setBearing({
-                loaded: false,
                 value: brng.toFixed(configs.decimal)
             })
         }
-        const onSuccess = (location) => {
+        const onSuccess = async (location) => {
             const latFetched = location.coords.latitude.toFixed(configs.decimal)
             const lngFetched = location.coords.longitude.toFixed(configs.decimal)
             setLocation({
@@ -65,34 +58,24 @@ const useGeoLocation = () => {
                     lng: lngFetched,
                 },
             });
-            axios.get(`https://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination`, {
-                params: {
-                    key: "zNEw7",
-                    lat1: latFetched,
-                    lon1: lngFetched,
-                    resultFormat: "json"
-                }
-            }).then((res) => {
+            getBearing(latFetched, lngFetched)
+            let geoMag = await geoMagFactory();
+            const myGeoMag = geoMag(latFetched,lngFetched, 0.0, new Date());
+            if(myGeoMag.error)
                 setDeclination({
-                    loaded: true,
-                    value: res.data.result[0].declination.toFixed(configs.decimal)
+                    error:myGeoMag.error
                 })
-                getBearing(latFetched, lngFetched)
-            }).catch(() => {
+            else
                 setDeclination({
-                    loaded: false,
-                    error: "Error fetching Declination"
+                    value:myGeoMag.dec.toFixed(configs.decimal)
                 })
-                setBearing({
-                    loaded: false,
-                    error: "Error fetching Bearing"
-                })
-            })
         };
         navigator.geolocation.getCurrentPosition(onSuccess, onError);
     }, []);
 
     return {location,declination,bearing};
 };
+
+
 
 export default useGeoLocation;

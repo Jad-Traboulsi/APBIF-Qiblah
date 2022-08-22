@@ -74,7 +74,10 @@ function App() {
       {!location.loaded && (<>
         Loading location
       </>)}
-      {location.loaded && !location.error && declination.loaded && !declination.error && (<>
+      {declination.error && (<>
+        {declination.error}
+      </>)}
+      {location.loaded && !location.error && !bearing.error && !declination.error && (<>
         <span>Your location is {location.coordinates.lat}, {location.coordinates.lng}</span>
         <br />
         <span>Your location has magnetic declination of {declination.value}</span>

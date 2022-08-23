@@ -2,8 +2,44 @@ import configs from '../data/configs';
 import '../styles/Map.css'
 import '../styles/Compass400.css'
 import { MapContainer, TileLayer, Marker, Popup, Polyline, LayersControl } from 'react-leaflet'
+import { MapContext } from './Contexts';
+import { useContext, useEffect, useRef } from 'react';
 
-function Map({ location, bearing, mapRef, markerRef, boxId, containerId }) {
+function Map({ location, bearing, boxId, containerId, buttonId, buttonName }) {
+    const [showMap] = useContext(MapContext)
+
+    const mapRef = useRef(null)
+    const markerRef = useRef(null)
+    useEffect(() => {
+        function openAndCenterMarker() {
+            const map = mapRef.current
+            if (!map) {
+                return
+            }
+            map.flyTo([Number(location.coordinates.lat), Number(location.coordinates.lng)], configs.zoomLevel)
+            const marker = markerRef.current
+            if (marker) {
+                marker.openPopup()
+            }
+        }
+        if (showMap) {
+            document.getElementById(boxId).style.display = "block";
+            setTimeout(() => {
+                document.getElementById(containerId).style.top = "0%";
+                document.getElementById(buttonId).innerHTML = `Hide ${buttonName}`;
+                openAndCenterMarker()
+            }, 200)
+        } else {
+            document.getElementById(boxId).style.display = "block";
+            document.getElementById(containerId).style.top = "-100%";
+            document.getElementById(buttonId).innerHTML = `Show ${buttonName}`;
+
+            setTimeout(() => {
+                document.getElementById(boxId).style.display = "none";
+            }, 700)
+        }
+
+    }, [buttonId, boxId, buttonName, containerId, location, showMap])
 
     const { BaseLayer } = LayersControl
 

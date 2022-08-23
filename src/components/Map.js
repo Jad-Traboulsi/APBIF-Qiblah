@@ -24,6 +24,8 @@ function Map({ location, bearing, boxId, containerId, buttonId, buttonName }) {
         }
         if (showMap) {
             document.getElementById(boxId).style.display = "block";
+            //removing ukranian flag
+            document.getElementsByClassName('leaflet-control-attribution')[0].children[0].children[0].remove()
             setTimeout(() => {
                 document.getElementById(containerId).style.top = "0%";
                 document.getElementById(buttonId).innerHTML = `Hide ${buttonName}`;
@@ -52,12 +54,13 @@ function Map({ location, bearing, boxId, containerId, buttonId, buttonName }) {
                     ref={mapRef}
                     whenReady={(map) => {
                         mapRef.current = map
-                    }}>
+                    }}
+                    >
                     <LayersControl>
                         <BaseLayer checked name="Basic View">
                             <TileLayer
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                attribution='<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                             />
                         </BaseLayer>
 
@@ -68,11 +71,42 @@ function Map({ location, bearing, boxId, containerId, buttonId, buttonName }) {
                                 subdomains={['mt1', 'mt2', 'mt3']}
                             />
                         </BaseLayer>
+
+                        <BaseLayer name="Roadmap">
+                            <TileLayer
+                                url='http://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z} '
+                            // subdomains={['mt1', 'mt2', 'mt3']}
+                            />
+                        </BaseLayer>
+                        <BaseLayer name="Terrain">
+                            <TileLayer
+                                url='http://mt0.google.com/vt/lyrs=p&hl=en&x={x}&y={y}&z={z}'
+                            // subdomains={['mt1', 'mt2', 'mt3']}
+                            />
+                        </BaseLayer>
+                        <BaseLayer name="Altered roadmap">
+                            <TileLayer
+                                url='http://mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}'
+                            // subdomains={['mt1', 'mt2', 'mt3']}
+                            />
+                        </BaseLayer>
+                        <BaseLayer name="Satellite only">
+                            <TileLayer
+                                url='http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}'
+                            // subdomains={['mt1', 'mt2', 'mt3']}
+                            />
+                        </BaseLayer>
+                        <BaseLayer name="Hybrid">
+                            <TileLayer
+                                url='http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}'
+                            // subdomains={['mt1', 'mt2', 'mt3']}
+                            />
+                        </BaseLayer>
                     </LayersControl>
 
                     <Marker ref={markerRef} position={[location.coordinates.lat, location.coordinates.lng]}>
                         <Popup>
-                            Your location: {location.coordinates.lat}, {location.coordinates.lng}
+                            Location: {location.coordinates.lat}, {location.coordinates.lng}
                             <br />
                             Qiblah Heading: {bearing.value}
                         </Popup>

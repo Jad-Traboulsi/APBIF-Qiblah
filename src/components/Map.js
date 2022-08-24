@@ -16,6 +16,7 @@ function Map({ location, bearing, boxId, containerId, buttonId, buttonName }) {
             if (!map) {
                 return
             }
+            map.attributionControl.setPrefix("")
             map.flyTo([Number(location.coordinates.lat), Number(location.coordinates.lng)], configs.zoomLevel)
             const marker = markerRef.current
             if (marker) {
@@ -24,8 +25,6 @@ function Map({ location, bearing, boxId, containerId, buttonId, buttonName }) {
         }
         if (showMap) {
             document.getElementById(boxId).style.display = "block";
-            //removing ukranian flag
-            document.getElementsByClassName('leaflet-control-attribution')[0].children[0].children[0].remove()
             setTimeout(() => {
                 document.getElementById(containerId).style.top = "0%";
                 document.getElementById(buttonId).innerHTML = `Hide ${buttonName}`;
@@ -60,7 +59,7 @@ function Map({ location, bearing, boxId, containerId, buttonId, buttonName }) {
                         <BaseLayer checked name="Basic View">
                             <TileLayer
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                attribution='<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                attribution='Edited by <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                             />
                         </BaseLayer>
 

@@ -56,51 +56,46 @@ function Map({ location, bearing, boxId, containerId, buttonId, buttonName }) {
                     }}
                     >
                     <LayersControl>
-                        <BaseLayer checked name="Basic View">
+                        <BaseLayer checked name="Basic View 1">
                             <TileLayer
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                 attribution='Edited by <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                             />
                         </BaseLayer>
 
-                        <BaseLayer name="Satellite View">
+                        <BaseLayer name="Basic View 2">
+                            <TileLayer
+                                url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png'
+                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                                subdomains={['a', 'b', 'c', 'd']}
+                                maxZoom={20}
+                            />
+                        </BaseLayer>
+
+                        <BaseLayer name="Basic View 3">
+                            <TileLayer
+                                url='https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png'
+                                attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+                                maxZoom={20}
+                            />
+                        </BaseLayer>
+
+                        <BaseLayer name="Satellite View 1">
                             <TileLayer
                                 url='https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}'
                                 maxZoom={20}
                                 subdomains={['mt1', 'mt2', 'mt3']}
+                                attribution='Edited by Google Map contributors'
                             />
                         </BaseLayer>
 
-                        <BaseLayer name="Roadmap">
+                        <BaseLayer name="Satellite View 2">
                             <TileLayer
-                                url='http://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z} '
-                            // subdomains={['mt1', 'mt2', 'mt3']}
+                                url='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+                                attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
                             />
                         </BaseLayer>
-                        <BaseLayer name="Terrain">
-                            <TileLayer
-                                url='http://mt0.google.com/vt/lyrs=p&hl=en&x={x}&y={y}&z={z}'
-                            // subdomains={['mt1', 'mt2', 'mt3']}
-                            />
-                        </BaseLayer>
-                        <BaseLayer name="Altered roadmap">
-                            <TileLayer
-                                url='http://mt0.google.com/vt/lyrs=r&hl=en&x={x}&y={y}&z={z}'
-                            // subdomains={['mt1', 'mt2', 'mt3']}
-                            />
-                        </BaseLayer>
-                        <BaseLayer name="Satellite only">
-                            <TileLayer
-                                url='http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}'
-                            // subdomains={['mt1', 'mt2', 'mt3']}
-                            />
-                        </BaseLayer>
-                        <BaseLayer name="Hybrid">
-                            <TileLayer
-                                url='http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}'
-                            // subdomains={['mt1', 'mt2', 'mt3']}
-                            />
-                        </BaseLayer>
+
                     </LayersControl>
 
                     <Marker ref={markerRef} position={[location.coordinates.lat, location.coordinates.lng]}>

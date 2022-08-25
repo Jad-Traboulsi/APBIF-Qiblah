@@ -1,2 +1,4 @@
 draw iphone compass
 do the same thing done for compass 400
+
+fetch coords by location

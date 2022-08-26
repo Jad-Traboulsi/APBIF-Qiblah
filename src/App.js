@@ -3,6 +3,7 @@ import configs from './data/configs';
 import { useState } from 'react';
 import { GetBearing, GetDeclination, isAcceptable } from './components/LocationHelper';
 import Information from './components/Info';
+import Canvas from './components/Canvas';
 
 function App() {
   const [location, setLocation] = useState({
@@ -218,6 +219,7 @@ function App() {
       <br />
       <br />
       <br />
+      {/* <Canvas/> */}
       {location.loaded && !location.error && !bearing.error && !declination.error && !errorMessage.error && (<>
         <Information
           bearing={bearing}

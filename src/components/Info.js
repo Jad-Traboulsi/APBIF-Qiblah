@@ -54,7 +54,7 @@ const Information = ({declination,bearing,location}) => {
             <br />
             Compass 360 number: {(360 - (bearing.value - Number(declination.value))).toFixed(configs.decimal)}
             <br />
-            Compass 400 number: {((360 - (bearing.value - Number(declination.value))) / 0.9).toFixed(configs.decimal)}
+            Compass 400 number: {((360 - (bearing.value - Number(declination.value))) / 9).toFixed(1)}
             <br />
             <br />
             <button id={elements.compass400.buttonId} onClick={toggle}>

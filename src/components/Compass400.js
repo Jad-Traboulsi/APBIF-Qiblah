@@ -14,7 +14,7 @@ function Compass400({ needleId, compassTextId, boxId, containerId, buttonId, but
                 document.getElementById(buttonId).innerHTML = `Hide ${buttonName}`;
                 setTimeout(function () {
                     document.getElementById(needleId).style.transform = `rotate(${(360 - (bearing - Number(declination))).toFixed(configs.decimal)}deg)`;
-                    document.getElementById(compassTextId).innerHTML = `${((360 - (bearing - Number(declination))) / 0.9).toFixed(configs.decimal)}`;
+                    document.getElementById(compassTextId).innerHTML = `${((360 - (bearing - Number(declination))) / 9).toFixed(1)}`;
                 }, 550);
             }, 200)
 

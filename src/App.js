@@ -7,7 +7,7 @@ import Information from './components/Info';
 function App() {
   const [location, setLocation] = useState({
     loaded: false,
-    coordinates: { lat: "", lng: "" },
+    coordinates: { lat: "", lng: "", name: {} },
   });
   const [declination, setDeclination] = useState({
     value: 0
@@ -17,13 +17,18 @@ function App() {
   });
   const [latInput, setLatInput] = useState(0);
   const [lngInput, setLngInput] = useState(0);
+  const [addressInput, setAddressInput] = useState("")
+
   const [errorMessage, setErrorMessage] = useState({
     error: false,
     message: ""
   })
+  const [addressErrorMessage, setAddressErrorMessage] = useState({
+    error:false,
+    message:"",
+  })
   async function getGeoLocation() {
     const onError = (error) => {
-      console.log(error);
       setLocation({
         loaded: true,
         error: {
@@ -35,14 +40,28 @@ function App() {
     const onSuccess = async (location) => {
       const latFetched = location.coords.latitude.toFixed(configs.decimal)
       const lngFetched = location.coords.longitude.toFixed(configs.decimal)
+      const addressFetched = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latFetched}&lon=${lngFetched}&format=json`).then(response => response.json())
+      let addressName = {}
+      if (addressFetched.error) {
+        addressName.error = true;
+        addressName.message = addressFetched.error
+      } else {
+        addressName.error = false;
+        addressName.display = addressFetched.display_name
+      }
       setLocation({
         loaded: true,
         coordinates: {
           lat: latFetched,
           lng: lngFetched,
+          name:addressName
         },
       });
       setErrorMessage({
+        error: false,
+        message: ""
+      })
+      setAddressErrorMessage({
         error: false,
         message: ""
       })
@@ -65,11 +84,22 @@ function App() {
   async function getCustomLocation() {
     const result = isAcceptable(latInput, lngInput)
     if (result.acceptable) {
+      const addressFetched = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${parseFloat(latInput).toFixed(configs.decimal)}&lon=${parseFloat(lngInput).toFixed(configs.decimal) }&format=json`).then(response => response.json())
+      let addressName = {}
+      if(addressFetched.error){
+        addressName.error = true;
+        addressName.message = addressFetched.error
+      } else {
+        addressName.error = false;
+        addressName.display = addressFetched.display_name
+      }
+      console.log(addressFetched);
       setLocation({
         loaded: true,
         coordinates: {
           lat: parseFloat(latInput).toFixed(configs.decimal),
           lng: parseFloat(lngInput).toFixed(configs.decimal),
+          name: addressName
         },
       });
       setBearing({
@@ -80,12 +110,56 @@ function App() {
         error: false,
         message: ""
       })
+      setAddressErrorMessage({
+        error: false,
+        message: ""
+      })
     } else {
       setErrorMessage({
         error: true,
         message: result.message
       })
     }
+  }
+  async function getLatLngFromAddress(){
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=3&addressdetails=1&q=${addressInput}`)
+      .then(response => response.json())
+      .then(async (data) => {
+        if(data.length>0){
+          
+          const latFetched = Number(data[0].lat).toFixed(configs.decimal);
+          const lngFetched = Number(data[0].lon).toFixed(configs.decimal)
+          const addressName = { error: false, display: data[0].display_name }
+          setAddressErrorMessage({
+            error: false,
+            message: "",
+          })
+          setLocation({
+            loaded: true,
+            coordinates: {
+              lat: latFetched,
+              lng: lngFetched,
+              name: addressName
+            },
+          });
+          setErrorMessage({
+            error: false,
+            message: ""
+          })
+          setLatInput(latFetched)
+          setLngInput(lngFetched)
+          setBearing({
+            value: GetBearing(latFetched, lngFetched)
+          })
+          setDeclination(await GetDeclination(latFetched, lngFetched))
+        }else{
+          setAddressErrorMessage({
+            error: true,
+            message: "Input a valid address",
+          })
+        }
+
+      })
   }
 
   
@@ -96,7 +170,6 @@ function App() {
         {location.error.message}
       </>)}
       <br />
-
       Lat:
       <input
         type="text"
@@ -125,6 +198,23 @@ function App() {
         Locate Me
       </button>
       <br />
+      <br />
+      Address: 
+      <input
+        type="text"
+        value={addressInput}
+        onChange={(e) => { setAddressInput(e.target.value); }}
+      />
+      <br />
+      <button onClick={getLatLngFromAddress}>
+        Locate this Address
+      </button>
+      <br />
+      {addressErrorMessage.error && (
+        <>
+          {addressErrorMessage.message}
+        </>
+      )}
       <br />
       <br />
       <br />

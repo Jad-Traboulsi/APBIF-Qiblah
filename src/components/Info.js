@@ -41,7 +41,9 @@ const Information = ({declination,bearing,location}) => {
 
     return (
         <>
-            <span>Your location is {location.coordinates.lat}, {location.coordinates.lng}</span>
+            {location.coordinates.name.error ? (<span>{location.coordinates.name.message}</span>) : (<span>Your location name {location.coordinates.name.display}</span>)}
+            <br />
+            <span>Your location coordinates {location.coordinates.lat}, {location.coordinates.lng}</span>
             <br />
             <span>Your location has magnetic declination of {declination.value}</span>
 

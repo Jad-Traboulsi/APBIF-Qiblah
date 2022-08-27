@@ -1,6 +1,5 @@
 import configs from '../data/configs';
 import '../styles/Map.css'
-import '../styles/Compass400.css'
 import { MapContainer, TileLayer, Marker, Popup, Polyline, LayersControl } from 'react-leaflet'
 import { MapContext } from './Contexts';
 import { useContext, useEffect, useRef } from 'react';

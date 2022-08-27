@@ -1,0 +1,19 @@
+#compassPhoneBox {
+    height: 700px;
+    width: 500px;
+    overflow: hidden;
+}
+
+#compassPhoneContainer {
+    top: -100%;
+    position: relative;
+    transition: all .5s ease-in;
+    text-align: center;
+}
+#compassPhoneInfo{
+    font-weight: bold;
+    font-size: large;
+}
+#compassPhone{
+    border-radius: 40px;
+}

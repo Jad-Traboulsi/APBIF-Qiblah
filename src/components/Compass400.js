@@ -1,6 +1,7 @@
 import needle from '../data/media/Needle Silva.png';
 import back from '../data/media/Back.png';
 import configs from '../data/configs';
+import '../styles/Compass400.css'
 import { useContext, useEffect } from 'react';
 import { Compass400Context } from './Contexts';
 

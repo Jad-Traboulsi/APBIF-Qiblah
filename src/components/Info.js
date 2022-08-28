@@ -15,28 +15,15 @@ const Information = ({declination,bearing,location}) => {
         map: "Show Map",
         compassPhone:"Show Compass Phone"
     })
-    const elements = {
-        compass400: {
-            buttonId: "showHideCompass400",
-            compassBoxId: "compass400Box"
-        },
-        map: {
-            buttonId: "showHideMap",
-            containerId: "mapContainer",
-            mapBoxId: "mapBox"
-        },
-        compassPhone: {
-            buttonId: "showHideCompassPhone",
-            containerId: "compassPhoneContainer",
-            compassTextId: "compassPhoneText",
-            compassBoxId: "compassPhoneBox"
-        }
-        
+    const buttonIds = {
+        compass400: "showHideCompass400",
+        map: "showHideMap",
+        compassPhone: "showHideCompassPhone",
     }
     
     function toggle(event) {
         let old = buttons
-        if (event.target.id === elements.compass400.buttonId) {
+        if (event.target.id === buttonIds.compass400) {
             if (showCompass400){
                 old.compass400 = "Show Compass 400"
                 setButtons(old)
@@ -48,7 +35,7 @@ const Information = ({declination,bearing,location}) => {
                 setShowCompass400(true)
             }
 
-        } else if (event.target.id === elements.map.buttonId) {
+        } else if (event.target.id === buttonIds.map) {
             if (showMap) {
                 old.map = "Show Map"
                 setButtons(old)
@@ -59,7 +46,7 @@ const Information = ({declination,bearing,location}) => {
                 setButtons(old)
                 setShowMap(true)
             }
-        } else if (event.target.id === elements.compassPhone.buttonId) {
+        } else if (event.target.id === buttonIds.compassPhone) {
             if (showCompassPhone) {
                 old.compassPhone = "Show Compass Phone"
                 setButtons(old)
@@ -91,15 +78,15 @@ const Information = ({declination,bearing,location}) => {
             Compass 400 number: {((360 - (bearing.value - Number(declination.value))) / 9).toFixed(configs.decimal)}
             <br />
             <br />
-            <button id={elements.compass400.buttonId} onClick={toggle}>
+            <button id={buttonIds.compass400} onClick={toggle}>
                 {buttons.compass400}
             </button>
             <br />
-            <button id={elements.map.buttonId} onClick={toggle}>
+            <button id={buttonIds.map} onClick={toggle}>
                 {buttons.map}
             </button>
             <br />
-            <button id={elements.compassPhone.buttonId} onClick={toggle}>
+            <button id={buttonIds.compassPhone} onClick={toggle}>
                 {buttons.compassPhone}
             </button>
             <br />
@@ -112,17 +99,13 @@ const Information = ({declination,bearing,location}) => {
                 <Map
                     location={location}
                     bearing={bearing}
-                    boxId={elements.map.mapBoxId}
-                    containerId={elements.map.containerId}
-                    buttonId={elements.map.buttonId}
+                    boxId={'mapBox'}
+                    containerId={'mapContainer'}
                 />
             </MapContext.Provider>
             <CompassPhoneContext.Provider value={[showCompassPhone]} >
                 <CompassPhone
                     angle={Number(Number(bearing.value).toFixed(0))}
-                    boxId={elements.compassPhone.compassBoxId}
-                    containerId={elements.compassPhone.containerId}
-                    buttonId={elements.compassPhone.buttonId}
                 />
             </CompassPhoneContext.Provider>
         </>

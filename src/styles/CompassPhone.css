@@ -7,7 +7,7 @@
 #compassPhoneContainer {
     top: -100%;
     position: relative;
-    transition: all .5s ease-in;
+    transition: all .75s ease-in;
     text-align: center;
 }
 #compassPhoneInfo{

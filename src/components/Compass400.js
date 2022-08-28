@@ -8,12 +8,11 @@ import { Compass400Context } from './Contexts';
 function Compass400({ bearing, declination }) {
     const [showCompass400] = useContext(Compass400Context)
     const [display,setDisplay] = useState("none")
-    const [containerTop, setContainerTop] = useState('0%')
+    const [containerTop, setContainerTop] = useState('-100%')
     const [angle,setAngle] = useState(0)
 
 
     useEffect(() => {
-        console.log(Number(((360 - (bearing - Number(declination))) / 0.9).toFixed(configs.decimal)));
         if (showCompass400) {
             setDisplay('block')
             setTimeout(() => {

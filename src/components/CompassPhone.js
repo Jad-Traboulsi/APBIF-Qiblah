@@ -2,10 +2,12 @@ import React, { useRef, useEffect, useState, useContext } from 'react'
 import { CompassPhoneContext } from './Contexts';
 import '../styles/CompassPhone.css'
 
-const CompassPhone = ({angle,boxId,containerId,buttonId}) => {
+const CompassPhone = ({angle}) => {
     const canvasRef = useRef(null)
     const [allAngles, setAllAngles] = useState(0);
     const [desiredAngle, setDesiredAngle] = useState(0);
+    const [display, setDisplay] = useState("none");
+    const [top, setTop] = useState("-100%");
     const [showCompassPhone] = useContext(CompassPhoneContext)
 
     useEffect(() => {
@@ -142,22 +144,24 @@ const CompassPhone = ({angle,boxId,containerId,buttonId}) => {
                 else if (360 - allAngles < desiredAngle)
                     setAllAngles(allAngles - 1)
             }
-
         }, 10);
 
         if (showCompassPhone) {
-            document.getElementById(boxId).style.display = "block";
-            document.getElementById(containerId).style.top = "0%";
+            setDisplay('block')
+            setTop("-100%")
             setTimeout(() => {
-                setDesiredAngle(angle)
-            }, 500)
+                setTop('0%')
+                setTimeout(()=>{
+                    setDesiredAngle(angle)
+                },200)
+            }, 400)
 
         } else {
             setDesiredAngle(0)
-            document.getElementById(containerId).style.top = "-100%";
+            setTop("-100%")
             setTimeout(function () {
-                document.getElementById(boxId).style.display = "none";
-            }, 450);
+                setDisplay('none');
+            }, 500);
 
         }
 
@@ -165,11 +169,11 @@ const CompassPhone = ({angle,boxId,containerId,buttonId}) => {
             clearInterval(id);
         };
 
-    }, [angle, allAngles, boxId, buttonId, containerId,showCompassPhone,desiredAngle])
+    }, [angle, allAngles,showCompassPhone,desiredAngle])
 
     return (
-        <div id={boxId}>
-            <div id={containerId}>
+        <div id='compassPhoneBox' style={{ display: display }}>
+            <div id='compassPhoneContainer' style={{top:top}}>
                 <canvas id="compassPhone" width={500} height={600} ref={canvasRef} />
                 {/* <br />
                 <br /> */}

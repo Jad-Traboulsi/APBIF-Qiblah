@@ -13,11 +13,9 @@
 
 #compass400Needle {
     position: absolute;
-    /* top: 25.5%;
-  left: 11.9%; */
-    top: 25.7%;
-    left: 47.6%;
-    max-height: 60%;
+    top: 89px;
+    left: 161px;
+    max-height: 206px;
     transition: 500ms linear all;
 }
 
@@ -29,8 +27,7 @@
     font-weight: bold;
 }
 #compass400Box {
-    height: 340px;
-    width: 300px;
+    width: 340px;
     overflow: hidden;
 }
 

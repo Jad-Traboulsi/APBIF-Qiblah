@@ -2,17 +2,20 @@ import needle from '../data/media/Needle Silva.png';
 import back from '../data/media/Back.png';
 import configs from '../data/configs';
 import '../styles/Compass400.css'
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Compass400Context } from './Contexts';
 
-function Compass400({ needleId, compassTextId, boxId, containerId, buttonId, buttonName, bearing, declination }) {
+function Compass400({ needleId, compassTextId, boxId, containerId, buttonId, bearing, declination }) {
     const [showCompass400] = useContext(Compass400Context)
+    const [style,setStyle] = useState({
+        display:"none"
+    })
+
     useEffect(() => {
         if (showCompass400) {
             document.getElementById(boxId).style.display = "block";
             setTimeout(() => {
                 document.getElementById(containerId).style.top = "0%";
-                document.getElementById(buttonId).innerHTML = `Hide ${buttonName}`;
                 setTimeout(function () {
                     document.getElementById(needleId).style.transform = `rotate(${(360 - (bearing - Number(declination))).toFixed(configs.decimal)}deg)`;
                     document.getElementById(compassTextId).innerHTML = `${((360 - (bearing - Number(declination))) / 9).toFixed(1)}`;
@@ -21,7 +24,6 @@ function Compass400({ needleId, compassTextId, boxId, containerId, buttonId, but
 
         } else {
             document.getElementById(containerId).style.top = "-100%";
-            document.getElementById(buttonId).innerHTML = `Show ${buttonName}`;
             document.getElementById(needleId).style.transform = "rotate(0deg)"
             document.getElementById(compassTextId).innerHTML = `0`;
             setTimeout(function () {
@@ -29,7 +31,7 @@ function Compass400({ needleId, compassTextId, boxId, containerId, buttonId, but
             }, 450);
 
         }
-    }, [bearing, boxId, buttonId, buttonName, compassTextId, containerId, declination, needleId, showCompass400])
+    }, [bearing, boxId, buttonId, compassTextId, containerId, declination, needleId, showCompass400])
     return (
         <div id={boxId}>
             <div id={containerId}>

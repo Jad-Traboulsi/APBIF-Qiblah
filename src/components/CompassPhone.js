@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState, useContext } from 'react'
 import { CompassPhoneContext } from './Contexts';
 import '../styles/CompassPhone.css'
 
-const CompassPhone = ({angle,boxId,containerId,buttonId,buttonName}) => {
+const CompassPhone = ({angle,boxId,containerId,buttonId}) => {
     const canvasRef = useRef(null)
     const [allAngles, setAllAngles] = useState(0);
     const [desiredAngle, setDesiredAngle] = useState(0);
@@ -148,7 +148,6 @@ const CompassPhone = ({angle,boxId,containerId,buttonId,buttonName}) => {
         if (showCompassPhone) {
             document.getElementById(boxId).style.display = "block";
             document.getElementById(containerId).style.top = "0%";
-            document.getElementById(buttonId).innerHTML = `Hide ${buttonName}`;
             setTimeout(() => {
                 setDesiredAngle(angle)
             }, 500)
@@ -156,7 +155,6 @@ const CompassPhone = ({angle,boxId,containerId,buttonId,buttonName}) => {
         } else {
             setDesiredAngle(0)
             document.getElementById(containerId).style.top = "-100%";
-            document.getElementById(buttonId).innerHTML = `Show ${buttonName}`;
             setTimeout(function () {
                 document.getElementById(boxId).style.display = "none";
             }, 450);
@@ -167,7 +165,7 @@ const CompassPhone = ({angle,boxId,containerId,buttonId,buttonName}) => {
             clearInterval(id);
         };
 
-    }, [angle, allAngles, boxId, buttonId, buttonName, containerId,showCompassPhone,desiredAngle])
+    }, [angle, allAngles, boxId, buttonId, containerId,showCompassPhone,desiredAngle])
 
     return (
         <div id={boxId}>

@@ -10,10 +10,14 @@ const Information = ({declination,bearing,location}) => {
     const [showCompass400, setShowCompass400] = useState(false)
     const [showMap, setShowMap] = useState(false)
     const [showCompassPhone, setShowCompassPhone] = useState(false)
+    const [buttons,setButtons] = useState({
+        compass400:"Show Compass 400",
+        map: "Show Map",
+        compassPhone:"Show Compass Phone"
+    })
     const elements = {
         compass400: {
             buttonId: "showHideCompass400",
-            buttonName: "Compass 400",
             containerId: "compass400Container",
             needleId: "compass400Needle",
             compassTextId: "compass400Text",
@@ -21,36 +25,54 @@ const Information = ({declination,bearing,location}) => {
         },
         map: {
             buttonId: "showHideMap",
-            buttonName: "Map",
             containerId: "mapContainer",
             mapBoxId: "mapBox"
         },
         compassPhone: {
-            buttonId: "showHideCompassPhonr",
-            buttonName: "Compass Phone",
+            buttonId: "showHideCompassPhone",
             containerId: "compassPhoneContainer",
             compassTextId: "compassPhoneText",
             compassBoxId: "compassPhoneBox"
         }
         
     }
+    
     function toggle(event) {
+        let old = buttons
         if (event.target.id === elements.compass400.buttonId) {
-            if (showCompass400)
+            if (showCompass400){
+                old.compass400 = "Show Compass 400"
+                setButtons(old)
                 setShowCompass400(false)
-            else
+            }
+            else {
+                old.compass400 = "Hide Compass 400"
+                setButtons(old )
                 setShowCompass400(true)
+            }
 
         } else if (event.target.id === elements.map.buttonId) {
-            if (showMap)
+            if (showMap) {
+                old.map = "Show Map"
+                setButtons(old)
                 setShowMap(false)
-            else
+            }
+            else {
+                old.map = "Hide Map"
+                setButtons(old)
                 setShowMap(true)
+            }
         } else if (event.target.id === elements.compassPhone.buttonId) {
-            if (showCompassPhone)
+            if (showCompassPhone) {
+                old.compassPhone = "Show Compass Phone"
+                setButtons(old)
                 setShowCompassPhone(false)
-            else
+            }
+            else {
+                old.compassPhone = "Hide Compass Phone"
+                setButtons(old)
                 setShowCompassPhone(true)
+            }
         }
     }
 
@@ -73,15 +95,15 @@ const Information = ({declination,bearing,location}) => {
             <br />
             <br />
             <button id={elements.compass400.buttonId} onClick={toggle}>
-                Show {elements.compass400.buttonName}
+                {buttons.compass400}
             </button>
             <br />
             <button id={elements.map.buttonId} onClick={toggle}>
-                Show {elements.map.buttonName}
+                {buttons.map}
             </button>
             <br />
             <button id={elements.compassPhone.buttonId} onClick={toggle}>
-                Show {elements.compassPhone.buttonName}
+                {buttons.compassPhone}
             </button>
             <br />
 
@@ -92,7 +114,6 @@ const Information = ({declination,bearing,location}) => {
                     needleId={elements.compass400.needleId}
                     compassTextId={elements.compass400.compassTextId}
                     buttonId={elements.compass400.buttonId}
-                    buttonName={elements.compass400.buttonName}
                     bearing={bearing.value}
                     declination={declination.value} />
             </Compass400Context.Provider>
@@ -103,7 +124,6 @@ const Information = ({declination,bearing,location}) => {
                     boxId={elements.map.mapBoxId}
                     containerId={elements.map.containerId}
                     buttonId={elements.map.buttonId}
-                    buttonName={elements.map.buttonName}
                 />
             </MapContext.Provider>
             <CompassPhoneContext.Provider value={[showCompassPhone]} >
@@ -112,7 +132,6 @@ const Information = ({declination,bearing,location}) => {
                     boxId={elements.compassPhone.compassBoxId}
                     containerId={elements.compassPhone.containerId}
                     buttonId={elements.compassPhone.buttonId}
-                    buttonName={elements.compassPhone.buttonName}
                 />
             </CompassPhoneContext.Provider>
         </>

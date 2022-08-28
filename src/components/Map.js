@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup, Polyline, LayersControl } from 
 import { MapContext } from './Contexts';
 import { useContext, useEffect, useRef } from 'react';
 
-function Map({ location, bearing, boxId, containerId, buttonId, buttonName }) {
+function Map({ location, bearing, boxId, containerId, buttonId }) {
     const [showMap] = useContext(MapContext)
 
     const mapRef = useRef(null)
@@ -26,20 +26,18 @@ function Map({ location, bearing, boxId, containerId, buttonId, buttonName }) {
             document.getElementById(boxId).style.display = "block";
             setTimeout(() => {
                 document.getElementById(containerId).style.top = "0%";
-                document.getElementById(buttonId).innerHTML = `Hide ${buttonName}`;
                 openAndCenterMarker()
             }, 200)
         } else {
             document.getElementById(boxId).style.display = "block";
             document.getElementById(containerId).style.top = "-100%";
-            document.getElementById(buttonId).innerHTML = `Show ${buttonName}`;
 
             setTimeout(() => {
                 document.getElementById(boxId).style.display = "none";
             }, 700)
         }
 
-    }, [buttonId, boxId, buttonName, containerId, location, showMap])
+    }, [buttonId, boxId, containerId, location, showMap])
 
     const { BaseLayer } = LayersControl
 

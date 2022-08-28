@@ -214,9 +214,6 @@ function App() {
           {addressErrorMessage.message}
         </>
       )}
-      <br />
-      <br />
-      <br />
 
       {location.loaded && !location.error && !bearing.error && !declination.error && !errorMessage.error && (<>
 

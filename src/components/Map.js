@@ -2,13 +2,17 @@ import configs from '../data/configs';
 import '../styles/Map.css'
 import { MapContainer, TileLayer, Marker, Popup, Polyline, LayersControl } from 'react-leaflet'
 import { MapContext } from './Contexts';
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
-function Map({ location, bearing, boxId, containerId, buttonId }) {
+function Map({ location, bearing }) {
     const [showMap] = useContext(MapContext)
 
     const mapRef = useRef(null)
     const markerRef = useRef(null)
+
+    const [top, setTop] = useState('-100%')
+    const [display, setDisplay] = useState('block')
+
     useEffect(() => {
         function openAndCenterMarker() {
             const map = mapRef.current
@@ -23,27 +27,27 @@ function Map({ location, bearing, boxId, containerId, buttonId }) {
             }
         }
         if (showMap) {
-            document.getElementById(boxId).style.display = "block";
+            setDisplay('block')
             setTimeout(() => {
-                document.getElementById(containerId).style.top = "0%";
+                setTop('0%')
                 openAndCenterMarker()
             }, 200)
         } else {
-            document.getElementById(boxId).style.display = "block";
-            document.getElementById(containerId).style.top = "-100%";
+            setDisplay('block')
+            setTop('-100%')
 
             setTimeout(() => {
-                document.getElementById(boxId).style.display = "none";
+                setDisplay('none')
             }, 700)
         }
 
-    }, [buttonId, boxId, containerId, location, showMap])
+    }, [setTop, setDisplay, location, showMap])
 
     const { BaseLayer } = LayersControl
 
     return (
-        <div id={boxId}>
-            <div id={containerId}>
+        <div id="mapBox" style={{display:display}}>
+            <div id="mapContainer" style={{top:top}}>
                 <MapContainer
                     center={[location.coordinates.lat, location.coordinates.lng]}
                     zoom={configs.zoomLevel}

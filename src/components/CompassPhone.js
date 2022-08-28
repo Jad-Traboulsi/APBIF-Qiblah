@@ -175,8 +175,7 @@ const CompassPhone = ({angle}) => {
         <div id='compassPhoneBox' style={{ display: display }}>
             <div id='compassPhoneContainer' style={{top:top}}>
                 <canvas id="compassPhone" width={500} height={600} ref={canvasRef} />
-                {/* <br />
-                <br /> */}
+                <br/>
                 <span id="compassPhoneInfo" width={500}>Make sure to use True North in the phone settings</span>
             </div>
         </div>

@@ -1,6 +1,6 @@
 #compassPhoneBox {
     height: 700px;
-    width: 500px;
+    width: fit-content;
     overflow: hidden;
 }
 
@@ -9,6 +9,10 @@
     position: relative;
     transition: all .75s ease-in;
     text-align: center;
+    border: 4px solid black;
+    border-radius: 15px;
+    background-color: white;
+    padding: 5px;
 }
 #compassPhoneInfo{
     font-weight: bold;

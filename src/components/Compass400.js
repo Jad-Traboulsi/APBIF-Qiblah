@@ -5,40 +5,40 @@ import '../styles/Compass400.css'
 import { useContext, useEffect, useState } from 'react';
 import { Compass400Context } from './Contexts';
 
-function Compass400({ needleId, compassTextId, boxId, containerId, buttonId, bearing, declination }) {
+function Compass400({ bearing, declination }) {
     const [showCompass400] = useContext(Compass400Context)
-    const [style,setStyle] = useState({
-        display:"none"
-    })
+    const [display,setDisplay] = useState("none")
+    const [containerTop, setContainerTop] = useState('0%')
+    const [angle,setAngle] = useState(0)
+
 
     useEffect(() => {
+        console.log(Number(((360 - (bearing - Number(declination))) / 0.9).toFixed(configs.decimal)));
         if (showCompass400) {
-            document.getElementById(boxId).style.display = "block";
+            setDisplay('block')
             setTimeout(() => {
-                document.getElementById(containerId).style.top = "0%";
+                setContainerTop('0%');
                 setTimeout(function () {
-                    document.getElementById(needleId).style.transform = `rotate(${(360 - (bearing - Number(declination))).toFixed(configs.decimal)}deg)`;
-                    document.getElementById(compassTextId).innerHTML = `${((360 - (bearing - Number(declination))) / 9).toFixed(1)}`;
+                    setAngle(Number(((360 - (bearing - Number(declination))) / 0.9).toFixed(configs.decimal)));
                 }, 550);
             }, 200)
 
         } else {
-            document.getElementById(containerId).style.top = "-100%";
-            document.getElementById(needleId).style.transform = "rotate(0deg)"
-            document.getElementById(compassTextId).innerHTML = `0`;
+            setContainerTop('-100%')
+            setAngle(0);
             setTimeout(function () {
-                document.getElementById(boxId).style.display = "none";
+                setDisplay('none')
             }, 450);
 
         }
-    }, [bearing, boxId, buttonId, compassTextId, containerId, declination, needleId, showCompass400])
+    }, [bearing, setDisplay,setAngle, setContainerTop, declination, showCompass400])
     return (
-        <div id={boxId}>
-            <div id={containerId}>
+        <div id='compass400Box' style={{display:display}}>
+            <div id='compass400Container' style={{top:containerTop}}>
                 <img src={back} alt="back" id='compass400Back' />
-                <img src={needle} id={needleId} alt="needle" />
+                <img src={needle} id='compass400Needle' alt="needle" style={{transform:`rotate(${angle}grad)`}}/>
                 <br />
-                <span id={compassTextId} className='compassIndicator'>0</span>
+                <span id='compass400Text' className='compassIndicator'>{(angle/10).toFixed(1)}</span>
             </div>
         </div>
 

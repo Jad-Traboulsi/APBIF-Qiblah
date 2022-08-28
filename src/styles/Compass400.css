@@ -27,6 +27,7 @@
     font-weight: bold;
 }
 #compass400Box {
+    height: 370px;
     width: 340px;
     overflow: hidden;
 }

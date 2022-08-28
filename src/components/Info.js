@@ -18,9 +18,6 @@ const Information = ({declination,bearing,location}) => {
     const elements = {
         compass400: {
             buttonId: "showHideCompass400",
-            containerId: "compass400Container",
-            needleId: "compass400Needle",
-            compassTextId: "compass400Text",
             compassBoxId: "compass400Box"
         },
         map: {
@@ -106,14 +103,8 @@ const Information = ({declination,bearing,location}) => {
                 {buttons.compassPhone}
             </button>
             <br />
-
             <Compass400Context.Provider value={[showCompass400]} >
                 <Compass400
-                    boxId={elements.compass400.compassBoxId}
-                    containerId={elements.compass400.containerId}
-                    needleId={elements.compass400.needleId}
-                    compassTextId={elements.compass400.compassTextId}
-                    buttonId={elements.compass400.buttonId}
                     bearing={bearing.value}
                     declination={declination.value} />
             </Compass400Context.Provider>

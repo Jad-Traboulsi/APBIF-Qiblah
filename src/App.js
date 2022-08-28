@@ -24,8 +24,8 @@ function App() {
     message: ""
   })
   const [addressErrorMessage, setAddressErrorMessage] = useState({
-    error:false,
-    message:"",
+    error: false,
+    message: "",
   })
   async function getGeoLocation() {
     const onError = (error) => {
@@ -54,7 +54,7 @@ function App() {
         coordinates: {
           lat: latFetched,
           lng: lngFetched,
-          name:addressName
+          name: addressName
         },
       });
       setErrorMessage({
@@ -84,9 +84,9 @@ function App() {
   async function getCustomLocation() {
     const result = isAcceptable(latInput, lngInput)
     if (result.acceptable) {
-      const addressFetched = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${parseFloat(latInput).toFixed(configs.decimal)}&lon=${parseFloat(lngInput).toFixed(configs.decimal) }&format=json`).then(response => response.json())
+      const addressFetched = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${parseFloat(latInput).toFixed(configs.decimal)}&lon=${parseFloat(lngInput).toFixed(configs.decimal)}&format=json`).then(response => response.json())
       let addressName = {}
-      if(addressFetched.error){
+      if (addressFetched.error) {
         addressName.error = true;
         addressName.message = addressFetched.error
       } else {
@@ -120,12 +120,12 @@ function App() {
       })
     }
   }
-  async function getLatLngFromAddress(){
+  async function getLatLngFromAddress() {
     fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=3&addressdetails=1&q=${addressInput}`)
       .then(response => response.json())
       .then(async (data) => {
-        if(data.length>0){
-          
+        if (data.length > 0) {
+
           const latFetched = Number(data[0].lat).toFixed(configs.decimal);
           const lngFetched = Number(data[0].lon).toFixed(configs.decimal)
           const addressName = { error: false, display: data[0].display_name }
@@ -151,7 +151,7 @@ function App() {
             value: GetBearing(latFetched, lngFetched)
           })
           setDeclination(await GetDeclination(latFetched, lngFetched))
-        }else{
+        } else {
           setAddressErrorMessage({
             error: true,
             message: "Input a valid address",
@@ -161,59 +161,51 @@ function App() {
       })
   }
 
-  
+
 
   return (
     <div className="main">
-      {location.loaded && location.error && (<>
-        {location.error.message}
-      </>)}
-      <br />
-      Lat:
-      <input
-        type="text"
-        value={latInput}
-        onChange={(e) => { setLatInput(e.target.value); }}
-      />
-      <br />
-      Long:
-      <input
-        type="text"
-        value={lngInput}
-        onChange={(e) => { setLngInput(e.target.value); }}
-      />
-      <br />
-      <button onClick={getCustomLocation}>
-        Locate this position
-      </button>
-      <br />
-      {errorMessage.error && (
-        <>
-          {errorMessage.message}
-        </>
-      )}
-      <br />
-      <button onClick={getGeoLocation}>
-        Locate Me
-      </button>
-      <br />
-      <br />
-      Address: 
-      <input
-        type="text"
-        value={addressInput}
-        onChange={(e) => { setAddressInput(e.target.value); }}
-      />
-      <br />
-      <button onClick={getLatLngFromAddress}>
-        Locate this Address
-      </button>
-      <br />
-      {addressErrorMessage.error && (
-        <>
-          {addressErrorMessage.message}
-        </>
-      )}
+      <div>
+        Lat:
+        <input
+          type="text"
+          value={latInput}
+          onChange={(e) => { setLatInput(e.target.value); }}
+        />
+        <br />
+        Long:
+        <input
+          type="text"
+          value={lngInput}
+          onChange={(e) => { setLngInput(e.target.value); }}
+        />
+        <br />
+        <button onClick={getCustomLocation}>
+          Locate this position
+        </button>
+      </div>
+      <div style={{ marginTop: '20px' }}>
+        Address:
+        <input
+          type="text"
+          value={addressInput}
+          onChange={(e) => { setAddressInput(e.target.value); }}
+        />
+        <br />
+        <button onClick={getLatLngFromAddress}>
+          Locate this Address
+        </button>
+      </div>
+      <div style={{ marginTop: '20px' }}>
+        <button className='btn-white' onClick={getGeoLocation}>
+          Locate Me
+        </button>
+      </div>
+      <div className='errorMessages' style={{marginTop:"20px"}}>
+        {addressErrorMessage.error && (<>{addressErrorMessage.message}</>)}
+        {errorMessage.error && (<>{errorMessage.message}</>)}
+        {location.loaded && location.error && (<>{location.error.message}</>)}
+      </div>
 
       {location.loaded && !location.error && !bearing.error && !declination.error && !errorMessage.error && (<>
 

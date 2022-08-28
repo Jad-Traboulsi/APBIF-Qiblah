@@ -33,6 +33,14 @@ const Information = ({ declination, bearing, location }) => {
                 old.compass400 = "Hide Compass 400"
                 setButtons(old)
                 setShowCompass400(true)
+
+                old.map = "Show Map"
+                setButtons(old)
+                setShowMap(false)
+                
+                old.compassPhone = "Show Compass Phone"
+                setButtons(old)
+                setShowCompassPhone(false)
             }
 
         } else if (event.target.id === buttonIds.map) {
@@ -45,6 +53,14 @@ const Information = ({ declination, bearing, location }) => {
                 old.map = "Hide Map"
                 setButtons(old)
                 setShowMap(true)
+
+                old.compass400 = "Show Compass 400"
+                setButtons(old)
+                setShowCompass400(false)
+
+                old.compassPhone = "Show Compass Phone"
+                setButtons(old)
+                setShowCompassPhone(false)
             }
         } else if (event.target.id === buttonIds.compassPhone) {
             if (showCompassPhone) {
@@ -56,6 +72,14 @@ const Information = ({ declination, bearing, location }) => {
                 old.compassPhone = "Hide Compass Phone"
                 setButtons(old)
                 setShowCompassPhone(true)
+
+                old.map = "Show Map"
+                setButtons(old)
+                setShowMap(false)
+
+                old.compass400 = "Show Compass 400"
+                setButtons(old)
+                setShowCompass400(false)
             }
         }
     }

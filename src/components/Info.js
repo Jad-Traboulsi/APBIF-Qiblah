@@ -118,7 +118,7 @@ const Information = ({ declination, bearing, location }) => {
             <Compass400Context.Provider value={[showCompass400]} >
                 <Compass400
                     bearing={bearing.value}
-                    declination={declination.value} />
+                    declination={declination.value}/>
             </Compass400Context.Provider>
             <MapContext.Provider value={[showMap]} >
                 <Map
@@ -128,7 +128,7 @@ const Information = ({ declination, bearing, location }) => {
             </MapContext.Provider>
             <CompassPhoneContext.Provider value={[showCompassPhone]} >
                 <CompassPhone
-                    angle={Number(Number(bearing.value).toFixed(0))}
+                    angle={Number((bearing.value - Number(declination.value)).toFixed(0))}
                 />
             </CompassPhoneContext.Provider>
         </>

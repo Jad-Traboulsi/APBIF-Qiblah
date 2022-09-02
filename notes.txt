@@ -1,8 +1,3 @@
-change iphone compass to magnetic
-put qiblah magnetic
-resize as compass 400
-
-
 add city name in compass 400 and iphone
 make compass 400 as image
 

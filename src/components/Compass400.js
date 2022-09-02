@@ -5,7 +5,7 @@ import '../styles/Compass400.css'
 import { useContext, useEffect, useState } from 'react';
 import { Compass400Context } from './Contexts';
 
-function Compass400({ bearing, declination }) {
+function Compass400({ bearing, declination}) {
     const [showCompass400] = useContext(Compass400Context)
     const [display,setDisplay] = useState("none")
     const [containerTop, setContainerTop] = useState('-100%')

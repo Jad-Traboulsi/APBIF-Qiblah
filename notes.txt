@@ -1,2 +1,9 @@
-draw iphone compass
-do the same thing done for compass 400
+change iphone compass to magnetic
+put qiblah magnetic
+resize as compass 400
+
+
+add city name in compass 400 and iphone
+make compass 400 as image
+
+fix map make centered

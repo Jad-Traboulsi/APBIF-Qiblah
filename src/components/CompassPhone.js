@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState, useContext } from 'react'
 import { CompassPhoneContext } from './Contexts';
 import '../styles/CompassPhone.css'
 
-const CompassPhone = ({angle}) => {
+const CompassPhone = ({angle,location}) => {
     const canvasRef = useRef(null)
     const [allAngles, setAllAngles] = useState(0);
     const [desiredAngle, setDesiredAngle] = useState(0);
@@ -130,6 +130,7 @@ const CompassPhone = ({angle}) => {
             letter = "NW"
         ctx.fillText(`${desiredAngle.toFixed(0)}° ${letter}`, canvasWidth / 2, canvasHeight + 100 - 30);
 
+        ctx.fillText(location.town ? location.town : location.city ? location.city : location.municipality ? location.municipality : "", canvasWidth / 2, canvasHeight + 100 - 90);
 
         const id = setInterval(() => {
 
@@ -169,7 +170,7 @@ const CompassPhone = ({angle}) => {
             clearInterval(id);
         };
 
-    }, [angle, allAngles,showCompassPhone,desiredAngle])
+    }, [angle, allAngles, showCompassPhone, desiredAngle, location.city, location.town, location.municipality])
 
     return (
         <div id='compassPhoneBox' style={{ display: display }}>

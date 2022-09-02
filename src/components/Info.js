@@ -20,7 +20,6 @@ const Information = ({ declination, bearing, location }) => {
         map: "showHideMap",
         compassPhone: "showHideCompassPhone",
     }
-
     function toggle(event) {
         let old = buttons
         if (event.target.id === buttonIds.compass400) {
@@ -118,7 +117,9 @@ const Information = ({ declination, bearing, location }) => {
             <Compass400Context.Provider value={[showCompass400]} >
                 <Compass400
                     bearing={bearing.value}
-                    declination={declination.value}/>
+                    declination={declination.value}
+                    location={location.coordinates.name.address}
+                />
             </Compass400Context.Provider>
             <MapContext.Provider value={[showMap]} >
                 <Map
@@ -129,6 +130,7 @@ const Information = ({ declination, bearing, location }) => {
             <CompassPhoneContext.Provider value={[showCompassPhone]} >
                 <CompassPhone
                     angle={Number((bearing.value - Number(declination.value)).toFixed(0))}
+                    location={location.coordinates.name.address}
                 />
             </CompassPhoneContext.Provider>
         </>

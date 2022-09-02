@@ -48,6 +48,7 @@ function App() {
       } else {
         addressName.error = false;
         addressName.display = addressFetched.display_name
+        addressName.address = addressFetched.address
       }
       setLocation({
         loaded: true,
@@ -92,6 +93,7 @@ function App() {
       } else {
         addressName.error = false;
         addressName.display = addressFetched.display_name
+        addressName.address = addressFetched.address
       }
       setLocation({
         loaded: true,
@@ -128,7 +130,7 @@ function App() {
 
           const latFetched = Number(data[0].lat).toFixed(configs.decimal);
           const lngFetched = Number(data[0].lon).toFixed(configs.decimal)
-          const addressName = { error: false, display: data[0].display_name }
+          const addressName = { error: false, display: data[0].display_name,address:data[0].address }
           setAddressErrorMessage({
             error: false,
             message: "",

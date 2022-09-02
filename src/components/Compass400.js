@@ -5,12 +5,12 @@ import '../styles/Compass400.css'
 import { useContext, useEffect, useState } from 'react';
 import { Compass400Context } from './Contexts';
 
-function Compass400({ bearing, declination}) {
+function Compass400({ bearing, declination,location}) {
     const [showCompass400] = useContext(Compass400Context)
     const [display,setDisplay] = useState("none")
     const [containerTop, setContainerTop] = useState('-100%')
     const [angle,setAngle] = useState(0)
-
+    console.log(location);
 
     useEffect(() => {
         if (showCompass400) {
@@ -37,7 +37,11 @@ function Compass400({ bearing, declination}) {
                 <img src={back} alt="back" id='compass400Back' />
                 <img src={needle} id='compass400Needle' alt="needle" style={{transform:`rotate(${angle}grad)`}}/>
                 <br />
-                <span id='compass400Text' className='compassIndicator'>{(angle/10).toFixed(1)}</span>
+                <span id='compass400Text' className='compassIndicator'>
+                    {location.town ? location.town : location.city ? location.city : location.municipality ? location.municipality : ""}
+                    <br/>
+                    {(angle/10).toFixed(1)}
+                </span>
             </div>
         </div>
 

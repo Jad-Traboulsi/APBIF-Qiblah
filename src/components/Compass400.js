@@ -1,4 +1,4 @@
-import needle from '../data/media/Needle Silva.png';
+import needle from '../data/media/needle.png';
 import back from '../data/media/Back.png';
 import configs from '../data/configs';
 import '../styles/Compass400.css'

@@ -1,3 +1,1 @@
-make compass 400 as image
-
 fix map make centered

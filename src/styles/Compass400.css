@@ -2,6 +2,7 @@
     position: relative;
     top: 0;
     left: 0;
+    border-radius: 40px;
 }
 
 #compass400Back {
@@ -27,8 +28,8 @@
     font-weight: bold;
 }
 #compass400Box {
-    height: fit-content;
-    width: 340px;
+    height: 500px;
+    width: fit-content;
     overflow: hidden;
 }
 

@@ -78,8 +78,9 @@ function Compass400({ bearing, declination, location }) {
             ctx.fillRect(0, canvas.height - 70,canvas.width,canvas.height)
 
             ctx.fillStyle = 'black'
-            ctx.fillText(location.town ? location.town : location.city ? location.city : location.municipality ? location.municipality : ""
-                , canvas.width / 2, canvas.height - 40)
+            if (location)
+                ctx.fillText(location.town ? location.town : location.city ? location.city : location.municipality ? location.municipality : ""
+                    , canvas.width / 2, canvas.height - 40)
             ctx.fillText((Number(((360 - (bearing - Number(declination))) / 0.9).toFixed(configs.decimal)) / 10).toFixed(1), canvas.width / 2, canvas.height-10)
 
 

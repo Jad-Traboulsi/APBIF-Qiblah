@@ -129,8 +129,8 @@ const CompassPhone = ({angle,location}) => {
         else if (desiredAngle >= 292.5 && desiredAngle < 337.5)
             letter = "NW"
         ctx.fillText(`${desiredAngle.toFixed(0)}° ${letter}`, canvasWidth / 2, canvasHeight + 100 - 30);
-
-        ctx.fillText(location.town ? location.town : location.city ? location.city : location.municipality ? location.municipality : "", canvasWidth / 2, canvasHeight + 100 - 90);
+        if(location)
+            ctx.fillText(location.town ? location.town : location.city ? location.city : location.municipality ? location.municipality : "", canvasWidth / 2, canvasHeight + 100 - 90);
 
         const id = setInterval(() => {
 
@@ -170,7 +170,7 @@ const CompassPhone = ({angle,location}) => {
             clearInterval(id);
         };
 
-    }, [angle, allAngles, showCompassPhone, desiredAngle, location.city, location.town, location.municipality])
+    }, [angle, allAngles, showCompassPhone, desiredAngle, location])
 
     return (
         <div id='compassPhoneBox' style={{ display: display }}>

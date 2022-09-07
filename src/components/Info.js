@@ -1,9 +1,9 @@
 import { useState } from "react"
 import configs from "../data/configs"
-import Compass400 from "./Compass400"
+import Compass400 from "./main/Compass400"
 import { MapContext, Compass400Context, CompassPhoneContext } from "./Contexts"
-import Map from "./Map"
-import CompassPhone from "./CompassPhone"
+import Map from "./main/Map"
+import CompassPhone from "./main/CompassPhone"
 
 const Information = ({ declination, bearing, location }) => {
 

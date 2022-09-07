@@ -1,9 +1,9 @@
-import needle from '../data/media/needle.png';
-import back from '../data/media/Back.png';
-import configs from '../data/configs';
-import '../styles/Compass400.css'
+import needle from '../../data/media/needle.png';
+import back from '../../data/media/Back.png';
+import configs from '../../data/configs';
+import '../../styles/Compass400.css'
 import { useContext, useEffect, useRef, useState } from 'react';
-import { Compass400Context } from './Contexts';
+import { Compass400Context } from '../Contexts';
 import html2canvas from "html2canvas";
 
 function Compass400({ bearing, declination, location }) {

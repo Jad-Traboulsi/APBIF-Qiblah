@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useContext } from 'react'
-import { CompassPhoneContext } from './Contexts';
-import '../styles/CompassPhone.css'
+import { CompassPhoneContext } from '../Contexts';
+import '../../styles/CompassPhone.css'
 import html2canvas from 'html2canvas';
 
 const CompassPhone = ({angle,location}) => {

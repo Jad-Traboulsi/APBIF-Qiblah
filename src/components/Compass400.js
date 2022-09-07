@@ -4,6 +4,7 @@ import configs from '../data/configs';
 import '../styles/Compass400.css'
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Compass400Context } from './Contexts';
+import html2canvas from "html2canvas";
 
 function Compass400({ bearing, declination, location }) {
     const canvasRef = useRef(null)
@@ -13,6 +14,20 @@ function Compass400({ bearing, declination, location }) {
     // const [angle,setAngle] = useState(0)
     console.log(location);
 
+    const exportAsImage = async (el, imageFileName) => {
+        const canvas = await html2canvas(el,{logging:false});
+        const image = canvas.toDataURL("image/png", 1.0);
+        
+        const fakeLink = window.document.createElement("a");
+        fakeLink.style = "display:none;";
+        fakeLink.download = imageFileName;
+        fakeLink.href = image;
+        document.body.appendChild(fakeLink);
+        fakeLink.click();
+        document.body.removeChild(fakeLink);
+        fakeLink.remove();
+    };
+    
     useEffect(() => {
         
         if (showCompass400) {
@@ -92,6 +107,9 @@ function Compass400({ bearing, declination, location }) {
         <div id='compass400Box' style={{ display: display }}>
             <div id='compass400Container' style={{ top: containerTop }}>
                 <canvas id="compass400" width={340} height={420} ref={canvasRef} />
+                <button style={{margin:'auto'}} onClick={() => exportAsImage(canvasRef.current, "Compass 400")}>
+                    Save As Image
+                </button>
                 {/* <img src={back} alt="back" id='compass400Back' />
                 <img src={needle} id='compass400Needle' alt="needle" style={{ transform: `rotate(${angle}grad)` }} />
                 <br />

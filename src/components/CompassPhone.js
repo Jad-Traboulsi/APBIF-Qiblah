@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useContext } from 'react'
 import { CompassPhoneContext } from './Contexts';
 import '../styles/CompassPhone.css'
+import html2canvas from 'html2canvas';
 
 const CompassPhone = ({angle,location}) => {
     const canvasRef = useRef(null)
@@ -171,13 +172,29 @@ const CompassPhone = ({angle,location}) => {
         };
 
     }, [angle, allAngles, showCompassPhone, desiredAngle, location])
+    
+    const exportAsImage = async (el, imageFileName) => {
+        const canvas = await html2canvas(el, { logging: false });
+        const image = canvas.toDataURL("image/png", 1.0);
 
+        const fakeLink = window.document.createElement("a");
+        fakeLink.style = "display:none;";
+        fakeLink.download = imageFileName;
+        fakeLink.href = image;
+        document.body.appendChild(fakeLink);
+        fakeLink.click();
+        document.body.removeChild(fakeLink);
+        fakeLink.remove();
+    };
     return (
         <div id='compassPhoneBox' style={{ display: display }}>
             <div id='compassPhoneContainer' style={{top:top}}>
                 <canvas id="compassPhone" width={500} height={600} ref={canvasRef} />
                 <br/>
                 <span id="compassPhoneInfo" width={500}>Make sure to turn off <br/> True North in the phone settings</span>
+                <button style={{ margin: 'auto' }} onClick={() => exportAsImage(canvasRef.current, "Compass Phone")}>
+                    Save As Image
+                </button>
             </div>
         </div>
         )

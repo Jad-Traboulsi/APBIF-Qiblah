@@ -189,27 +189,23 @@ function App() {
           Locate this position
         </button>
       </form>
-      <div style={{ marginTop: '20px' }}>
-        <form onSubmit={getLatLngFromAddress}>
-          Address:
-          <input
-            type="text"
-            value={addressInput}
-            onChange={(e) => { setAddressInput(e.target.value); }}
-          />
-          <br />
-          <button type='submit'>
-            Locate this Address
-          </button>
-        </form>
-      </div>
-      <div style={{ marginTop: '20px' }}>
-        <form onSubmit={getGeoLocation}>
-          <button type='submit'>
-            Locate Me
-          </button>
-        </form>
-      </div>
+      <form style={{ marginTop: '20px' }} onSubmit={getLatLngFromAddress}>
+        Address:
+        <input
+          type="text"
+          value={addressInput}
+          onChange={(e) => { setAddressInput(e.target.value); }}
+        />
+        <br />
+        <button type='submit'>
+          Locate this Address
+        </button>
+      </form>
+      <form style={{ marginTop: '20px' }} onSubmit={getGeoLocation}>
+        <button type='submit'>
+          Locate Me
+        </button>
+      </form>
       <div className='errorMessages' style={{ marginTop: "20px" }}>
         {addressErrorMessage.error && (<>{addressErrorMessage.message}</>)}
         {errorMessage.error && (<>{errorMessage.message}</>)}

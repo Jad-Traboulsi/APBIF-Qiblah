@@ -1,12 +1,12 @@
 .leaflet-container {
-    width: 392px;
-    height: 392px;
+    width: 50vh;
+    height: 50vh;
     border-radius: 10px;
 }
 
 #mapBox {
-    height: 400px;
-    width: 400px;
+    height: 70vh;
+    width: fit-content;
     overflow: hidden;
 }
 

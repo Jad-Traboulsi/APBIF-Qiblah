@@ -3,6 +3,7 @@ import '../styles/Map.css'
 import { MapContainer, TileLayer, Marker, Popup, Polyline, LayersControl } from 'react-leaflet'
 import { MapContext } from './Contexts';
 import { useContext, useEffect, useRef, useState } from 'react';
+import ScreenShooter from './ScreenShooter';
 
 function Map({ location, bearing }) {
     const [showMap] = useContext(MapContext)
@@ -56,6 +57,7 @@ function Map({ location, bearing }) {
                         mapRef.current = map
                     }}
                     >
+                    <ScreenShooter screenName="Map"/>
                     <LayersControl>
                         <BaseLayer checked name="Basic View 1">
                             <TileLayer

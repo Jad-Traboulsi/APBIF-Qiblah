@@ -39,8 +39,8 @@ function App() {
       });
     };
     const onSuccess = async (location) => {
-      const latFetched = location.coords.latitude.toFixed(configs.decimal)
-      const lngFetched = location.coords.longitude.toFixed(configs.decimal)
+      const latFetched = location.coords.latitude
+      const lngFetched = location.coords.longitude
       const addressFetched = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latFetched}&lon=${lngFetched}&format=json`).then(response => response.json())
       let addressName = {}
       if (addressFetched.error) {
@@ -54,8 +54,8 @@ function App() {
       setLocation({
         loaded: true,
         coordinates: {
-          lat: latFetched,
-          lng: lngFetched,
+          lat: latFetched.toFixed(configs.decimal),
+          lng: lngFetched.toFixed(configs.decimal),
           name: addressName
         },
       });
@@ -67,8 +67,8 @@ function App() {
         error: false,
         message: ""
       })
-      setLatInput(latFetched)
-      setLngInput(lngFetched)
+      setLatInput(latFetched.toFixed(configs.decimal))
+      setLngInput(lngFetched.toFixed(configs.decimal))
       setBearing({
         value: GetBearing(latFetched, lngFetched)
       })

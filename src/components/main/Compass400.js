@@ -4,29 +4,17 @@ import configs from '../../data/configs';
 import '../../styles/Compass400.css'
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Compass400Context } from '../Contexts';
-import html2canvas from "html2canvas";
 
 function Compass400({ bearing, declination, location }) {
     const canvasRef = useRef(null)
+    const imgRef = useRef(null);
     const [showCompass400] = useContext(Compass400Context)
     const [display, setDisplay] = useState("none")
     const [containerTop, setContainerTop] = useState('-100%')
+    const [imgData, setImageData] = useState()
     // const [angle,setAngle] = useState(0)
     console.log(location);
 
-    const exportAsImage = async (el, imageFileName) => {
-        const canvas = await html2canvas(el,{logging:false});
-        const image = canvas.toDataURL("image/png", 1.0);
-        
-        const fakeLink = window.document.createElement("a");
-        fakeLink.style = "display:none;";
-        fakeLink.download = imageFileName;
-        fakeLink.href = image;
-        document.body.appendChild(fakeLink);
-        fakeLink.click();
-        document.body.removeChild(fakeLink);
-        fakeLink.remove();
-    };
     
     useEffect(() => {
         
@@ -52,6 +40,7 @@ function Compass400({ bearing, declination, location }) {
             return x*Math.PI/200;
         }
         const canvas = canvasRef.current
+        const img = imgRef.current
         const ctx = canvas.getContext('2d')
         ctx.fillStyle = 'white'
         ctx.fillRect(0,0,canvas.width,canvas.height)
@@ -98,6 +87,10 @@ function Compass400({ bearing, declination, location }) {
                     , canvas.width / 2, canvas.height - 40)
             ctx.fillText((Number(((360 - (bearing - Number(declination))) / 0.9).toFixed(configs.decimal)) / 10).toFixed(1), canvas.width / 2, canvas.height-10)
 
+            const data = canvas.toDataURL("image/png", 1.0)
+            img.src = data
+            setImageData(data)
+
 
         }
         imgBack.src = back;
@@ -106,18 +99,13 @@ function Compass400({ bearing, declination, location }) {
     return (
         <div id='compass400Box' style={{ display: display }}>
             <div id='compass400Container' style={{ top: containerTop }}>
-                <canvas id="compass400" width={340} height={420} ref={canvasRef} />
-                <button style={{margin:'auto'}} onClick={() => exportAsImage(canvasRef.current, "Compass 400")}>
-                    Save As Image
-                </button>
-                {/* <img src={back} alt="back" id='compass400Back' />
-                <img src={needle} id='compass400Needle' alt="needle" style={{ transform: `rotate(${angle}grad)` }} />
-                <br />
-                <span id='compass400Text' className='compassIndicator'>
-                    {location.town ? location.town : location.city ? location.city : location.municipality ? location.municipality : ""}
-                    <br />
-                    {(Number(((360 - (bearing - Number(declination))) / 0.9).toFixed(configs.decimal)) / 10).toFixed(1)}
-                </span> */}
+                <canvas id="compass400" width={340} height={420} ref={canvasRef} style={{ display: "none" }} />
+                <img alt={"Compass 400"} ref={imgRef} style={{ borderRadius: "40px", width: "40vh", position:"relative",top:0,left:0,aspectRatio:"auto 340/420" }} />
+                <a href={imgData} download={"Compass 400"} style={{ textDecoration: "none" }}>
+                    <button style={{ margin: 'auto' }}>
+                        Save As Image
+                    </button>
+                </a>
             </div>
         </div>
 

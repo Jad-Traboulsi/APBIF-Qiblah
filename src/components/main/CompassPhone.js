@@ -1,18 +1,20 @@
 import React, { useRef, useEffect, useState, useContext } from 'react'
 import { CompassPhoneContext } from '../Contexts';
 import '../../styles/CompassPhone.css'
-import html2canvas from 'html2canvas';
 
-const CompassPhone = ({angle,location}) => {
-    const canvasRef = useRef(null)
+const CompassPhone = ({ angle, location }) => {
+    const canvasRef = useRef(null);
+    const imgRef = useRef(null);
     const [allAngles, setAllAngles] = useState(0);
     const [desiredAngle, setDesiredAngle] = useState(0);
     const [display, setDisplay] = useState("none");
     const [top, setTop] = useState("-100%");
-    const [showCompassPhone] = useContext(CompassPhoneContext)
+    const [showCompassPhone] = useContext(CompassPhoneContext);
+    const [imgData,setImageData] = useState()
 
     useEffect(() => {
         const canvas = canvasRef.current
+        const img = imgRef.current
         const ctx = canvas.getContext('2d')
         const canvasWidth = ctx.canvas.width
         const canvasHeight = ctx.canvas.height - 100
@@ -132,6 +134,13 @@ const CompassPhone = ({angle,location}) => {
         ctx.fillText(`${desiredAngle.toFixed(0)}° ${letter}`, canvasWidth / 2, canvasHeight + 100 - 30);
         if(location)
             ctx.fillText(location.town ? location.town : location.city ? location.city : location.municipality ? location.municipality : "", canvasWidth / 2, canvasHeight + 100 - 90);
+        ctx.font = '15px serif';
+        ctx.fillText(`Magnetic North`, canvasWidth - 90, canvasHeight + 100 - 20);
+
+        const data = canvas.toDataURL("image/png", 1.0)
+        img.src = data
+        setImageData(data)
+        
 
         const id = setInterval(() => {
 
@@ -173,28 +182,18 @@ const CompassPhone = ({angle,location}) => {
 
     }, [angle, allAngles, showCompassPhone, desiredAngle, location])
     
-    const exportAsImage = async (el, imageFileName) => {
-        const canvas = await html2canvas(el, { logging: false });
-        const image = canvas.toDataURL("image/png", 1.0);
-
-        const fakeLink = window.document.createElement("a");
-        fakeLink.style = "display:none;";
-        fakeLink.download = imageFileName;
-        fakeLink.href = image;
-        document.body.appendChild(fakeLink);
-        fakeLink.click();
-        document.body.removeChild(fakeLink);
-        fakeLink.remove();
-    };
     return (
         <div id='compassPhoneBox' style={{ display: display }}>
             <div id='compassPhoneContainer' style={{top:top}}>
-                <canvas id="compassPhone" width={500} height={600} ref={canvasRef} />
+                <canvas id="compassPhone" width={500} height={600} ref={canvasRef} style={{display:"none"}}/>
+                <img alt={"Compass Phone"} ref={imgRef} style={{borderRadius:"40px",width:"40vh",aspectRatio:"auto 500/600"}}/>
                 <br/>
                 <span id="compassPhoneInfo" width={500}>Make sure to turn off <br/> True North in the phone settings</span>
-                <button style={{ margin: 'auto' }} onClick={() => exportAsImage(canvasRef.current, "Compass Phone")}>
-                    Save As Image
-                </button>
+                <a href={imgData} download={"Compass Phone"} style={{textDecoration:"none"}}>
+                    <button style={{ margin: 'auto' }}>
+                        Save As Image
+                    </button>
+                </a>
             </div>
         </div>
         )

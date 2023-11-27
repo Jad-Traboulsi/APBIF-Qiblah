@@ -1,29 +1,16 @@
-body {
-    background: #e8ecf2;
+.container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 300px; /* you can change as you want the width and both will stay the same aspect ratio*/
 }
 
-button {
-    border: none;
-    cursor: pointer;
-    width: 150px;
-    height: 40px;
-    transition: all;
-    transition-duration: 250ms;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: #e8ecf2;
-    color: #73787d;
-    border-radius: 999px;
-    box-shadow: -5px -5px 10px rgba(255, 255, 255, 0.8), 5px 5px 10px rgba(0, 0, 0, 0.25);
-    border: 2px solid #e8ecf2
+.backImage {
+  width: 100%
 }
 
-button:hover {
-    box-shadow: -1px -1px 5px rgba(255, 255, 255, 0.6),
-        1px 1px 5px rgba(0, 0, 0, 0.3),
-        inset -2px -2px 5px rgba(255, 255, 255, 0.6),
-        inset 2px 2px 5px rgba(0, 0, 0, 0.3);
-    color: rgb(22, 93, 11);
+.needleImage {
+  position: absolute;
+  width: 100%;
 }
